@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Container, Typography } from '@mui/material';
 import JobList from '../components/JobList';
 import JobSearch from '../components/JobSearch';
 import JobFilter from '../components/JobFilter';
@@ -12,12 +13,14 @@ const HomePage = () => {
     useEffect(() => {
         const fetchJobs = async () => {
             const jobData = await getJobs();
+            console.log(jobData);
             setJobs(jobData);
         };
         fetchJobs();
     }, []);
 
     const handleSearch = (query) => {
+        console.log('Search Query:', query);
         setSearchQuery(query);
     };
 
@@ -31,13 +34,17 @@ const HomePage = () => {
         (filters.type ? job.type === filters.type : true)
     );
 
+    console.log('Filtered Jobs:', filteredJobs);
+
     return (
-        <div>
-            <h1>Job Listings</h1>
+        <Container>
+            <Typography variant="h2" gutterBottom>
+                Job Listings
+            </Typography>
             <JobSearch onSearch={handleSearch} />
-            <JobFilter onFilterChange={handleFilterChange} />
+            <JobFilter jobs={jobs} onFilterChange={handleFilterChange} />
             <JobList jobs={filteredJobs} />
-        </div>
+        </Container>
     );
 };
 

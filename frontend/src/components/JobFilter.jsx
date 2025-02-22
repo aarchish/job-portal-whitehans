@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-const JobFilter = ({ onFilterChange }) => {
+const JobFilter = ({ jobs, onFilterChange }) => {
     const [location, setLocation] = useState('');
+    const [locations, setLocations] = useState([]);
     const [jobType, setJobType] = useState('');
+    const [jobTypes, setJobTypes] = useState([]);
+
+    useEffect(() => {
+        const uniqueLocations = [...new Set(jobs.map(job => job.location))];
+        const uniqueJobTypes = [...new Set(jobs.map(job => job.type))];
+        setLocations(uniqueLocations);
+        setJobTypes(uniqueJobTypes);
+    }, [jobs]);
 
     const handleLocationChange = (event) => {
         setLocation(event.target.value);
@@ -16,18 +26,24 @@ const JobFilter = ({ onFilterChange }) => {
 
     return (
         <div>
-            <select value={location} onChange={handleLocationChange}>
-                <option value="">Select Location</option>
-                <option value="New York">New York</option>
-                <option value="San Francisco">San Francisco</option>
-                <option value="Remote">Remote</option>
-            </select>
-            <select value={jobType} onChange={handleJobTypeChange}>
-                <option value="">Select Job Type</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Contract">Contract</option>
-            </select>
+            <FormControl fullWidth margin="normal">
+                <InputLabel>Location</InputLabel>
+                <Select value={location} onChange={handleLocationChange}>
+                    <MenuItem value="">Select Location</MenuItem>
+                    {locations.map((loc, index) => (
+                        <MenuItem key={index} value={loc}>{loc}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+                <InputLabel>Job Type</InputLabel>
+                <Select value={jobType} onChange={handleJobTypeChange}>
+                    <MenuItem value="">Select Job Type</MenuItem>
+                    {jobTypes.map((type, index) => (
+                        <MenuItem key={index} value={type}>{type}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
         </div>
     );
 };

@@ -22,17 +22,17 @@ public class JobController {
     }
 
     @GetMapping("/{id}")
-    public Job getJobById(Long id) {
+    public Job getJobById(@PathVariable Long id) {
         return jobService.getJobById(id).orElse(null);
     }
 
     @PostMapping
-    public Job saveJob(Job job) {
+    public Job saveJob(@RequestBody Job job) {
         return jobService.saveJob(job);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteJob(Long id) {
+    public void deleteJob(@PathVariable Long id) {
         jobService.deleteJob(id);
     }
 }

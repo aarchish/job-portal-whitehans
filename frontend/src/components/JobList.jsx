@@ -1,18 +1,32 @@
 import React from 'react';
+import { List, ListItem, ListItemText, Typography } from '@mui/material';
 
 const JobList = ({ jobs }) => {
     return (
         <div>
-            <h2>Job Listings</h2>
-            <ul>
+            <Typography variant="h4" gutterBottom>
+                Job Listings
+            </Typography>
+            <List>
                 {jobs.map(job => (
-                    <li key={job.id}>
-                        <h3>{job.title}</h3>
-                        <p>{job.location}</p>
-                        <p>{job.type}</p>
-                    </li>
+                    <ListItem key={job.id} divider>
+                        <ListItemText
+                            primary={job.title}
+                            secondary={
+                                <>
+                                    <Typography component="span" variant="body2" color="textPrimary">
+                                        {job.company}
+                                    </Typography>
+                                    {" — "}
+                                    {job.location} - {job.type}
+                                    <br />
+                                    {job.description}
+                                </>
+                            }
+                        />
+                    </ListItem>
                 ))}
-            </ul>
+            </List>
         </div>
     );
 };
